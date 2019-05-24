@@ -1,0 +1,35 @@
+{
+    "name": "Convert Youtube videos to Mp3, Mp4",
+    "version": "1.0",
+    "description": "Convert youtube vids",
+    "permissions": [
+        "storage",
+        "tabs",
+        "<all_urls>",
+        "activeTab"
+    ],
+    "options_page": "dlyt/index.html",
+    "background": {
+        "scripts": [
+            "background.js"
+        ],
+        "persistent": false
+    },
+    "content_security_policy": "script-src 'self' https://www.dropbox.com; object-src 'self'",
+    "browser_action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "Images/Youtube-icon.png",
+            "32": "Images/Youtube-icon.png",
+            "64": "Images/Youtube-icon.png",
+            "128": "Images/Youtube-icon.png"
+        }
+    },
+    "icons": {
+        "16": "Images/Youtube-icon.png",
+        "32": "Images/Youtube-icon.png",
+        "64": "Images/Youtube-icon.png",
+        "128": "Images/Youtube-icon.png"
+    },
+    "manifest_version": 2
+}
