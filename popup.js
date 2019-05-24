@@ -3,7 +3,7 @@
 //pass url to CS.js?
 (function () {
     chrome.tabs.create({
-        url: "chrome-extension://ofikoipdgjaimmkiponbkelkfcnkkbkl/dlyt/index.html"
+        url: "chrome-extension://" + chrome.runtime.id + "/dlyt/index.html"
     })
 })();
 
