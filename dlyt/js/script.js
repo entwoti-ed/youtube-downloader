@@ -19,6 +19,7 @@ $("#submit").click(function (e) { //submit function
     var url = $("#url").val(); //get form data
     var format = $('#inlineFormCustomSelect :selected').val(); //get form data
     var reg = /(( ? : https ? : ) ? \/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/;
+    var regurl = /(http(s) ? : \/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
     console.log(url);
     if (url == '') {
         alert("no input");
@@ -28,6 +29,16 @@ $("#submit").click(function (e) { //submit function
         console.log('converting ' + url + ' to ' + format + ' (1 means audio, 10 means video)');
         loaddoc(url, format); //if url is present and a valid Youtube link call loaddoc
         $('#url').val('');
+    } else if (regurl.test(url)) {
+        //input.onchanged...
+        //add universal rename function
+        var dbname = url.substring(url.lastIndexOf("/") + 1);
+        dbname = dbname.replace(/%20/g, " ");
+        $('#dbsave').attr({
+            'href': url,
+            'data-filename': dbname
+        });
+        $('#dbsave').show();
     } else {
         alert("wrong url format");
     }
