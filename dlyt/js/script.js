@@ -49,14 +49,9 @@ $("#submit").click(function (e) { //submit function
 
 
 function statusdiv(status_text, progress) { //progress function
-    _getid("downlink2").innerHTML =
-        "<table><tr><td><div id='gd_progress2'></div><td>&nbsp;<span id='spanprogress'></span></td></tr></table>";
-    var a = _getid("gd_progress2");
-    if (a) {
-        if (progress > 0) {
-            $('#dynamic').css('width', progress + '%').text(progress + '%');
-            $('#status').text('status: ' + status_text + '...');
-        }
+    if (progress > 0) {
+        $('#dynamic').css('width', progress + '%').text(progress + '%');
+        $('#status').text('status: ' + status_text + '...');
     }
 }
 
