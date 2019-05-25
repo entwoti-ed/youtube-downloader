@@ -172,13 +172,6 @@ function _log(name, s, state, nohenc) { //logging function
 
 var gprogresstimer, gstarttime, gtotalsize;
 
-function proc_complete() { //task complete function
-    clearInterval(gprogresstimer);
-    gprogresstimer = null;
-    gd_isdownloading = false;
-    _getid("downlink2").innerHTML = '';
-}
-
 var goptions = { //params to pass into DB method
     files: [],
     success: function () {
