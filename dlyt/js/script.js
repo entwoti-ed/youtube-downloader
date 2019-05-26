@@ -1,14 +1,12 @@
 var realURL,
     progress,
     gd_isdownloading,
-    status;
-
-//var gd_loaded, gd_lastprogress, gd_issupported, gd_load_timer,
-//gd_bloburl, gd_state2;
+    status,
+    gprogresstimer,
+    gstarttime,
+    gtotalsize,
+    status_text;
 var g_logcount = 0;
-var gprogresstimer, gstarttime, gtotalsize;
-
-
 var goptions = { //params to pass into DB method
     files: [],
     success: function () {
@@ -22,7 +20,7 @@ var goptions = { //params to pass into DB method
         if (!gprogresstimer) {
             gstarttime = (new Date()).getTime();
             gprogresstimer = setInterval(function () {
-                var a = $('#dynamic');
+                var a = _getid("log4");
                 if (a) {
                     var s = (new Date()).getTime() - gstarttime;
                     s = parseInt(s / 1000);
@@ -43,7 +41,7 @@ var goptions = { //params to pass into DB method
         } else {
             per = progress * 100;
         }
-        var a = $("#status");
+        var a = _getid("log4");
         if (a) {
             var s = 'Saving to Dropbox...';
             if (per > 0) {
@@ -72,15 +70,10 @@ var goptions = { //params to pass into DB method
 }
 
 
-$(document).ready(function () {
-    $('#dbsave').hide();
-    $('#status').hide();
-});
-
 $("#submit").click(function (e) { //submit function
     e.preventDefault();
-    proc_complete();
-
+    //proc_complete();
+    $('#dynamic').addClass('progress-bar-animated');
     console.log("working...");
     var url = $("#url").val(); //get form data
     var format = $('#inlineFormCustomSelect :selected').val(); //get form data
@@ -90,8 +83,8 @@ $("#submit").click(function (e) { //submit function
     if (url == '') {
         alert("no input");
     } else if (ytreg.test(url)) {
-        $('#status').addClass('d-block').text('Starting...');
-        $('#submit').hide();
+        $('#log4').text('Starting...');
+        $('#submit').prop('disabled', true);
         console.log('converting ' + url + ' to ' + format + ' (1 means audio, other number means video)');
         loaddoc(url, format); //if url is present and a valid Youtube link call loaddoc
         $('#url').val('');
@@ -101,12 +94,9 @@ $("#submit").click(function (e) { //submit function
             //add universal rename function
             var dbname = url.substring(url.lastIndexOf("/") + 1);
             dbname = dbname.replace(/%20/g, " ");
+            Dropbox.createSaveButton(url, dbname, goptions);
             Dropbox.save(url, dbname, goptions);
-            $('#dbsave').attr({
-                'href': url,
-                'data-filename': dbname
-            });
-            $('#dbsave').show();
+            console.log('saving ' + dbname + ' to Dropbox');
         } else {
             sejdafetch(url);
             console.log('converting Sejda..')
@@ -123,7 +113,7 @@ $("#submit").click(function (e) { //submit function
 function statusdiv(status_text, progress) { //progress function
     if (progress > 0) {
         $('#dynamic').css('width', progress + '%').text(progress + '%');
-        $('#status').text('status: ' + status_text + '...');
+        $('#log4').text('status: ' + status_text + '...');
     }
 }
 
@@ -142,11 +132,6 @@ function loaddoc(url, format) { //ddown convert function
         checkmedia(progress_url);
         console.log(progress_url);
     });
-
-
-
-
-
 }
 
 function checkmedia(progress_url) { //GET download link
@@ -155,18 +140,13 @@ function checkmedia(progress_url) { //GET download link
     }).then(function (response) {
         return response.json();
     }).then(function (array) {
-        //console.log(JSON.stringify(array));
         progress = array.progress;
         status = array.status;
         realURL = array.download_url;
-        //add error and info ..................................................................................
-        var status_text = array.status_text;
-
+        status_text = array.status_text;
         console.log(status_text + ' ' + progress + '%');
-
         if (progress > 100) {
             progress = 100;
-
         }
         if (progress == null || progress == "null") {
             progress = 0;
@@ -176,9 +156,7 @@ function checkmedia(progress_url) { //GET download link
             setTimeout(checkmedia.bind(null, progress_url), 2500);
         } else {
 
-            if (realURL != null) {
-
-                //if no error, parse resulting URL, create filename, and add to uploader
+            if (realURL != null) { //if no error, parse resulting URL, create filename, and add to uploader
                 console.log(realURL);
                 var name = new URL(realURL);
                 var realname = name.pathname;
@@ -186,18 +164,16 @@ function checkmedia(progress_url) { //GET download link
                 var href = decodeURIComponent(name.href);
                 var result = realname.substring(realname.lastIndexOf("/") + 1);
                 result = result.replace(/%20/g, " ");
-
                 console.log(result);
                 $('#downlink2').text('converted file: ' + href);
                 Dropbox.createSaveButton(name.href, result, goptions);
                 Dropbox.save(name.href, result, goptions);
-                $('#submit').show();
+                $('#submit').prop('disabled', false);
             }
         }
 
     });
 }
-
 
 function proc_complete() { //task complete function
     clearInterval(gprogresstimer);
@@ -230,12 +206,3 @@ function _log(name, s, state, nohenc) { //logging function
     a.value = s1 + s;
     a.scrollTop = a.scrollHeight;
 }
-
-
-
-
-
-
-
-//todo
-//migrate everything to jquery
