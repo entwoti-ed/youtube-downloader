@@ -101,7 +101,7 @@
                         <option value="5" id='mp4720'>Video - 720p</option>
                         <option value="6" id='mp41080'>Video - 1080p</option>
                     </select>
-                    <div class="row">
+                    <!--<div class="row">
                         <div class="col-8 offset-3 my-3">
                             <div class="btn-group btn-group-toggle" role="group" data-toggle="buttons">
                                 <label class="btn btn-primary form-check-label active">
@@ -115,22 +115,25 @@
                                 </label>
                             </div>
                         </div>
+                    </div>-->
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="customSwitches">
+                        <label class="custom-control-label" for="customSwitches">Check this to save directly to Dropbox
+                            (leave the way it is to convert ot Sejda)</label>
                     </div>
                     <div class="row">
                         <div class="mx-auto"><button type="submit" class="btn btn-primary mb-2 mt-3"
-                                id="submit">Convert!</button>
+                                id="submit">SaveIt!</button>
                         </div>
                     </div>
                 </div>
             </div>
 
         </form>
-        <div class="row mt-20">
-            <div class="col-auto mt-20 mx-auto">
-                <p class="bg-primary text-light text-center p-2 rounded" id="status">Status:</p>
+        <div class="row">
+            <div class="col-auto mt-20 mb-2 mx-auto">
+                <p class="bg-primary text-light text-center p-2 rounded d-none" id="status">Status:</p>
                 <!--a id="dbsave" href="#" data-filename='' class="dropbox-saver"></a-->
-                <a id="drsave" href="#" role="button" class="drive-saver btn btn-primary">Save to Google Drive (faster
-                    but limited to 50MB)</a>
             </div>
             <div class="col-12 my-2">
                 <div class="progress">
