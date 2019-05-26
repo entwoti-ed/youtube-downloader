@@ -1,11 +1,13 @@
 var realURL,
-    array,
     progress,
+    gd_isdownloading,
     status;
 
-var gd_picker, gd_loaded, gd_pickerloaded, gd_lastprogress, gd_issupported, gd_isdownloading, gd_load_timer,
-    gd_bloburl, gd_state2;
+//var gd_loaded, gd_lastprogress, gd_issupported, gd_load_timer,
+//gd_bloburl, gd_state2;
 var g_logcount = 0;
+var gprogresstimer, gstarttime, gtotalsize;
+
 
 var goptions = { //params to pass into DB method
     files: [],
@@ -20,7 +22,7 @@ var goptions = { //params to pass into DB method
         if (!gprogresstimer) {
             gstarttime = (new Date()).getTime();
             gprogresstimer = setInterval(function () {
-                var a = _getid('dynamic');
+                var a = $('#dynamic');
                 if (a) {
                     var s = (new Date()).getTime() - gstarttime;
                     s = parseInt(s / 1000);
@@ -41,7 +43,7 @@ var goptions = { //params to pass into DB method
         } else {
             per = progress * 100;
         }
-        var a = _getid("status");
+        var a = $("#status");
         if (a) {
             var s = 'Saving to Dropbox...';
             if (per > 0) {
@@ -90,7 +92,7 @@ $("#submit").click(function (e) { //submit function
     } else if (ytreg.test(url)) {
         $('#status').addClass('d-block').text('Starting...');
         $('#submit').hide();
-        console.log('converting ' + url + ' to ' + format + ' (1 means audio, 10 means video)');
+        console.log('converting ' + url + ' to ' + format + ' (1 means audio, other number means video)');
         loaddoc(url, format); //if url is present and a valid Youtube link call loaddoc
         $('#url').val('');
     } else if (filereg.test(url)) {
@@ -186,7 +188,6 @@ function checkmedia(progress_url) { //GET download link
                 result = result.replace(/%20/g, " ");
 
                 console.log(result);
-                //attach_saveall(realURL, result); //pass realURL into saveall function
                 $('#downlink2').text('converted file: ' + href);
                 Dropbox.createSaveButton(name.href, result, goptions);
                 Dropbox.save(name.href, result, goptions);
@@ -202,7 +203,7 @@ function proc_complete() { //task complete function
     clearInterval(gprogresstimer);
     gprogresstimer = null;
     gd_isdownloading = false;
-    _getid("downlink2").innerHTML = '';
+    $("#downlink2").innerHTML = '';
     $('#dynamic').removeClass('progress-bar-animated');
 }
 
@@ -230,7 +231,6 @@ function _log(name, s, state, nohenc) { //logging function
     a.scrollTop = a.scrollHeight;
 }
 
-var gprogresstimer, gstarttime, gtotalsize;
 
 
 
@@ -239,6 +239,3 @@ var gprogresstimer, gstarttime, gtotalsize;
 
 //todo
 //migrate everything to jquery
-//update progress bar (use same one)
-//migrate everything to external script / stylesheet
-//add db button instead
