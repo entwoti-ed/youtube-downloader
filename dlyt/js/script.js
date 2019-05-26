@@ -41,7 +41,7 @@ var goptions = { //params to pass into DB method
         } else {
             per = progress * 100;
         }
-        var a = _getid("log4");
+        var a = _getid("downlink2");
         if (a) {
             var s = 'Saving to Dropbox...';
             if (per > 0) {
@@ -119,6 +119,7 @@ function statusdiv(status_text, progress) { //progress function
 
 function sejdafetch(url) {
     window.open('https://www.sejda.com/html-to-pdf?save-link=' + url);
+    proc_complete();
 }
 
 function loaddoc(url, format) { //ddown convert function 
