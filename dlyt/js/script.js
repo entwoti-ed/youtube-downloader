@@ -124,9 +124,12 @@ function checkmedia(progress_url) { //GET download link
                         name.href + '&foldername=Root+Folder&folderid=&filename=' + result + '&unzipfolder=&dfileid=&cextension=&cpasswd=&filename2=' + result
                 });
                 //show relevant saver
+                Dropbox.createSaveButton(name.href, result, goptions);
                 var saveTo = $("input[type='radio']:checked").val();
                 if (saveTo === 'dropbox') {
-                    $('#dbsave').show();
+                    //$('#dbsave').show();
+                    //Dropbox.createSaveButton(name.href, result, goptions);
+                    Dropbox.save(name.href, result, goptions);
                 } else if (saveTo === 'drive') {
                     $('#drsave').show();
                 }
@@ -139,7 +142,12 @@ function checkmedia(progress_url) { //GET download link
 }
 
 
-
+function proc_complete() { //task complete function
+    clearInterval(gprogresstimer);
+    gprogresstimer = null;
+    gd_isdownloading = false;
+    _getid("downlink2").innerHTML = '';
+}
 
 
 function _log(name, s, state, nohenc) { //logging function
@@ -186,7 +194,7 @@ var goptions = { //params to pass into DB method
                     s = parseInt(s / 1000);
                     var min = Math.floor(s / 60);
                     var sec = parseInt(s % 60);
-                    a.innerHTML = '(' + fillnumber(min) + ':' + fillnumber(sec) + ')';
+                    a.innerHTML = 'Saving to Dropbox... (' + fillnumber(min) + ':' + fillnumber(sec) + ')';
                 }
             }, 1000);
         }
