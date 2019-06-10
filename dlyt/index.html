@@ -115,8 +115,12 @@
             </div>
 
         </form>
+
+    </div>
+    <div class="container d-none shadow-lg bg-info" id="progress-div">
         <div class="row">
-            <div class="col-12 my-2">
+
+            <div class="col-12 mt-4">
                 <div class="progress">
                     <div id="dynamic" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
                         style="width: 0%; color: black;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%
@@ -125,21 +129,20 @@
                 </div>
             </div>
 
+
         </div>
-    </div>
-    <div class="container">
-        <table>
-            <tr>
-                <td>
-                    <div id="downlink2" class="border border-primary rounded bg-light"></div>
-                    <div id="log4" class="log"></div>
+        <div class="row">
+            <div class="col-12">
+                <!--<div id="downlink2" class="border border-primary rounded bg-light">
+                </div>-->
+                <div id="log4" class="log mt-4 justify-content-center">
+                </div>
+                <div class="col-12 mb-2 mx-auto" id="thumbnail"></div>
+                <div id="layer_message" class="gd_div" style="z-index:10001;display:none;"></div>
 
+            </div>
 
-                </td>
-            </tr>
-        </table>
-
-        <div id="layer_message" class="gd_div" style="z-index:10001;display:none;"></div>
+        </div>
     </div>
     <script src="/dlyt/js/jquery-3.3.1.slim.min.js"></script>
     <script src="/dlyt/js/bootstrap.min.js"></script>

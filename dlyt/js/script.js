@@ -83,15 +83,15 @@ $("#submit").click(function (e) { //submit function
     if (url == '') {
         alert("no input");
     } else if (ytreg.test(url)) {
+        $('#progress-div').removeClass('d-none').addClass('d-block');
         $('#log4').text('Starting...');
         $('#submit').prop('disabled', true);
         console.log('converting ' + url + ' to ' + format + ' (1 means audio, other number means video)');
         loaddoc(url, format); //if url is present and a valid Youtube link call loaddoc
+        loadpic(url);
         $('#url').val('');
     } else if (filereg.test(url)) {
         if ($('#customSwitches').is(':checked')) {
-            //input.onchanged...
-            //add universal rename function
             var dbname = url.substring(url.lastIndexOf("/") + 1);
             dbname = dbname.replace(/%20/g, " ");
             Dropbox.createSaveButton(url, dbname, goptions);
@@ -122,7 +122,21 @@ function sejdafetch(url) {
     proc_complete();
 }
 
-function loaddoc(url, format) { //ddown convert function 
+function loadpic(url) {
+    fetch("https://ddownr.com/api/info/index.php?url=" + encodeURIComponent(url), {
+        credentials: 'include'
+    }).then(function (response) {
+        return response.json();
+    }).then(function (picJSON) {
+        console.log(JSON.stringify(picJSON));
+        //add pic to div (array.image)
+        $('#thumbnail').html('<img src="' + picJSON.image + '" alt="thumbnail" class="img-thumbnail mx-auto">');
+        //add title + converting to div (array.title)
+        $('#log4').html('<span class="border border-primary rounded bg-light">Converting: ' + picJSON.title + '</span>');
+    });
+}
+
+function loaddoc(url, format) { //ddownr convert function 
     fetch("https://ddownr.com/download.php?url=" + url + "&format-option=" + format + "&playlist=1&playliststart=1&playlistend=250&index=1&naming=1&server_eu=1&server_us=1", {
         credentials: 'include'
     }).then(function (response) {
@@ -166,7 +180,7 @@ function checkmedia(progress_url) { //GET download link
                 var result = realname.substring(realname.lastIndexOf("/") + 1);
                 result = result.replace(/%20/g, " ");
                 console.log(result);
-                $('#downlink2').text('converted file: ' + href);
+                $('#log4').text('converted file: ' + href);
                 Dropbox.createSaveButton(name.href, result, goptions);
                 Dropbox.save(name.href, result, goptions);
                 $('#submit').prop('disabled', false);
