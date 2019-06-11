@@ -92,9 +92,11 @@ $("#submit").click(function (e) { //submit function
         $('#url').val('');
     } else if (filereg.test(url)) {
         if ($('#customSwitches').is(':checked')) {
+            $('#progress-div').removeClass('d-none').addClass('d-block');
             var dbname = url.substring(url.lastIndexOf("/") + 1);
             dbname = dbname.replace(/%20/g, " ");
-            Dropbox.createSaveButton(url, dbname, goptions);
+            //Dropbox.createSaveButton(url, dbname, goptions);
+
             Dropbox.save(url, dbname, goptions);
             console.log('saving ' + dbname + ' to Dropbox');
         } else {
