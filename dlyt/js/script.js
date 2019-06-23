@@ -78,11 +78,12 @@ $("#submit").click(function (e) { //submit function
     var url = $("#url").val(); //get form data
     var format = $('#inlineFormCustomSelect :selected').val(); //get form data
     var ytreg = /(( ? : https ? : ) ? \/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/;
+    var vimeoreg = /(http|https)?:\/\/(www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|)(\d+)(?:|\/\?)/;
     var filereg = /(http(s) ? : \/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
     console.log(url);
     if (url == '') {
         alert("no input");
-    } else if (ytreg.test(url)) {
+    } else if (ytreg.test(url) || vimeoreg.test(url)) {
         $('#progress-div').removeClass('d-none').addClass('d-block');
         $('#log4').text('Starting...');
         $('#submit').prop('disabled', true);
